@@ -452,8 +452,6 @@ status_codes handle_howmuch(char** argv, long long* differ, char* message)
 	}
 	else
 	{
-		int cur_year = localtime(&cur_time)->tm_year;
-		int some_year = localtime(&some_time)->tm_year;
 		switch (argv[2][1])
 		{
 			case 's':
@@ -469,7 +467,7 @@ status_codes handle_howmuch(char** argv, long long* differ, char* message)
 				sprintf(message, "hours passed");
 				break;
 			case 'y':
-				*differ = cur_year - some_year;
+				*differ = (cur_time - some_time) / 3600 / 24 / 365.2425;
 				sprintf(message, "years passed");
 				break;
 			default:
