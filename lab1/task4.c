@@ -111,10 +111,10 @@ int is_argc_valid(int argc, command_names cmd)
 int handle_xor8(FILE* file)
 {
 	int sum = 0;
-	char buffer[1];
-	while (fread(buffer, sizeof(char), 1, file) == 1)
+	char buffer;
+	while (fread(&buffer, sizeof(char), 1, file) == 1)
 	{
-		sum = (sum + buffer[0]) & 1;
+		sum ^= buffer;
 	}
 	return sum;
 }
@@ -123,13 +123,15 @@ int handle_xor32(FILE* file)
 {
 	int sum = 0;
 	char buffer[4];
-	while (fread(buffer, sizeof(char), 4, file) == 4)
+	int byte_cnt;
+	while ((byte_cnt = fread(buffer, sizeof(char), 4, file)) != 0)
 	{
-		sum += buffer[0] << 24;
-		sum += buffer[1] << 16;
-		sum += buffer[2] << 8;
-		sum += buffer[3];
-		sum &= 1;
+		int integer = 0;
+		for (int i = 0; i < byte_cnt; ++i)
+		{
+			integer += buffer[i] << 8*(3-i);
+		}
+		sum ^= integer;
 	}
 	return sum;
 }
