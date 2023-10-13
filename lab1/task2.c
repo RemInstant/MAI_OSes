@@ -542,10 +542,10 @@ int main()
 	int logged_user = -1;
 	int run_flag = 1;
 	int cmd_counter = 0;
-	while(run_flag)
+	while (run_flag)
 	{
 		// PRINT AVAILABLE COMMANDS
-		if(is_logged)
+		if (is_logged)
 		{
 			printf("Print \"Time\" to get current time\nPrint \"Date\" to get current date\n");
 			printf("Print \"Howmuch <time> <flag>\" to get time passed since date, defined in arg <time>");
@@ -580,7 +580,7 @@ int main()
 		// END READING COMMAND
 		
 		// BEGIN PROCESSING COMMAND
-		if(is_logged)
+		if (is_logged)
 		{
 			++cmd_counter;
 			// --- COMMAND: LOGOUT ---

@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	if (argc == 1)
 	{
-		printf("USAGE\n");
+		printf("Usage: command_name <input file>\n");
 		return 0;
 	}
 	
