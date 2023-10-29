@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <pthread.h>
 
 #define PH_COUNT 5
@@ -23,12 +22,12 @@ void* run_philosopher(void* data)
 	{
 		printf("Философ %d размышляет\n", ph_id);
 		pthread_mutex_lock(fork_l);
-		printf("Философ %d берёт левую вилку (%d)\n", ph_id, ph_id);
+		printf("Философ %d берёт левую вилку (-%d)\n", ph_id, ph_id);
 		pthread_mutex_lock(fork_r);
-		printf("Философ %d берёт правую вилку (%d)\n", ph_id, (ph_id + 1) % PH_COUNT);
+		printf("Философ %d берёт правую вилку (-%d)\n", ph_id, (ph_id + 1) % PH_COUNT);
 		printf("Философ %d ест\n", ph_id);
-		printf("Философ %d кладёт левую вилку\n", ph_id);
-		printf("Философ %d кладёт правую вилку\n", ph_id);
+		printf("Философ %d кладёт левую вилку (+%d)\n", ph_id, ph_id);
+		printf("Философ %d кладёт правую вилку (+%d)\n", ph_id, (ph_id + 1) % PH_COUNT);
 		pthread_mutex_unlock(fork_l);
 		pthread_mutex_unlock(fork_r);
 	}
@@ -45,7 +44,6 @@ int main()
 	for (int i = 0; i < PH_COUNT; ++i)
 	{
 		pthread_mutex_init(&forks[i], NULL);
-		printf("%d - %p\n", i, (void*) &(forks[i]));
 	}
 	for (int i = 0; i < PH_COUNT; ++i)
 	{
