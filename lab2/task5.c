@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <pthread.h>
@@ -32,18 +33,37 @@ void man_leaves(bathroom_data* data);
 void* process_woman(void* data);
 void* process_man(void* data);
 
-int main()
+int main(int argc, char** argv)
 {	
+	if (argc == 1)
+	{
+		printf("Usage: cmd_path <N>\n");
+		printf("N - max bathers number\n");
+		return 0;
+	}
+	
+	char* ptr;
+	int max_n = strtoll(argv[1], &ptr, 10);
+	if (*ptr != '\0')
+	{
+		printf("Invalid input\n");
+		return 1;
+	}
+	if (errno == ERANGE)
+	{
+		printf("Overflow\n");
+		return 2;
+	}
+	
 	bathroom_data data;
 	data.bathers_cnt = 0;
 	data.bather = NONE;
+	data.max_bathers_cnt = max_n;
 	
 	printf("Enter the number of women: ");
 	scanf("%d", &data.woman_cnt);
 	printf("Enter the number of men: ");
 	scanf("%d", &data.man_cnt);
-	printf("Enter the max number of bathers: ");
-	scanf("%d", &data.max_bathers_cnt);
 	printf("Enter the max time of bathing (> 0): ");
 	scanf("%d", &data.max_bath_time);
 	
